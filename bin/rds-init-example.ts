@@ -9,4 +9,4 @@ import { RdsInitStackExample } from '../demos/rds-init-example'
 const app = new cdk.App()
 
 /* eslint no-new: 0 */
-new RdsInitStackExample(app, 'RdsWithSeedingScripts')
+new RdsInitStackExample(app, 'RdsWithSeedingScriptsWithCDK2')
