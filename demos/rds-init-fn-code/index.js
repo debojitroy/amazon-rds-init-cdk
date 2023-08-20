@@ -9,10 +9,12 @@ const path = require('path')
 const secrets = new AWS.SecretsManager({})
 
 exports.handler = async (e) => {
+  let connection;
+
   try {
     const { config } = e.params
     const { password, username, host } = await getSecretValue(config.credsSecretName)
-    const connection = mysql.createConnection({
+    connection = mysql.createConnection({
       host,
       user: username,
       password,
@@ -33,6 +35,14 @@ exports.handler = async (e) => {
       status: 'ERROR',
       err,
       message: err.message
+    }
+  }finally {
+    try {
+      if (connection && connection.isConnected()) {
+        connection.end()
+      }
+    } catch(err) {
+      console.error('Failed to close connection...', err);
     }
   }
 }
